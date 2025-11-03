@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geschiedenis als Theater Quiz - Thema 8.1</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        .container {
+            min-height: 100vh;
+            background: #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        @media (max-width: 640px) {
+            .container {
+                padding: 8px;
+            }
+        }
+        .card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            padding: 32px;
+            max-width: 800px;
+            width: 100%;
+        }
+        @media (max-width: 640px) {
+            .card {
+                padding: 16px;
+                border-radius: 16px;
+            }
+        }
+        .title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #7c2d12;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        @media (max-width: 640px) {
+            .title {
+                font-size: 1.5rem;
+                margin-bottom: 4px;
+            }
+        }
+        .subtitle {
+            font-size: 1.25rem;
+            color: #c2410c;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+        @media (max-width: 640px) {
+            .subtitle {
+                font-size: 1rem;
+            }
+        }
+        .subtitle-small {
+            font-size: 1rem;
+            color: #ea580c;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        @media (max-width: 640px) {
+            .subtitle-small {
+                font-size: 0.85rem;
+                margin-bottom: 16px;
+            }
+        }
+        .emoji-large {
+            font-size: 6rem;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        @media (max-width: 640px) {
+            .emoji-large {
+                font-size: 4rem;
+                margin-bottom: 16px;
+            }
+        }
+        .emoji-question {
+            font-size: 5rem;
+            text-align: center;
+            margin: 24px 0;
+        }
+        @media (max-width: 640px) {
+            .emoji-question {
+                font-size: 3rem;
+                margin: 12px 0;
+            }
+        }
+        .start-button {
+            background: linear-gradient(to right, #dc2626, #b91c1c);
+            color: white;
+            padding: 20px 48px;
+            border-radius: 9999px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+        @media (max-width: 640px) {
+            .start-button {
+                padding: 14px 32px;
+                font-size: 1.1rem;
+            }
+        }
+        .start-button:hover {
+            transform: scale(1.1);
+            background: linear-gradient(to right, #b91c1c, #991b1b);
+        }
+        .tip {
+            text-align: center;
+            color: #c2410c;
+            font-size: 0.875rem;
+            margin-top: 24px;
+        }
+        @media (max-width: 640px) {
+            .tip {
+                font-size: 0.75rem;
+                margin-top: 16px;
+            }
+        }
+        .progress-bar-container {
+            width: 100%;
+            background: #e5e7eb;
+            border-radius: 9999px;
+            height: 12px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, #dc2626, #b91c1c);
+            transition: width 0.5s;
+        }
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #7c2d12;
+            margin-bottom: 8px;
+        }
+        @media (max-width: 640px) {
+            .progress-text {
+                font-size: 0.75rem;
+                margin-bottom: 6px;
+            }
+        }
+        .question-box {
+            background: linear-gradient(to right, #fee2e2, #fecaca);
+            border: 4px solid #fca5a5;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+        @media (max-width: 640px) {
+            .question-box {
+                padding: 12px;
+                margin-bottom: 12px;
+                border: 3px solid #fca5a5;
+            }
+        }
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #7f1d1d;
+            text-align: center;
+            line-height: 1.5;
+        }
+        @media (max-width: 640px) {
+            .question-text {
+                font-size: 0.95rem;
+                line-height: 1.3;
+            }
+        }
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        @media (max-width: 640px) {
+            .options-grid {
+                gap: 8px;
+                margin-bottom: 12px;
+            }
+        }
+        @media (min-width: 768px) {
+            .options-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        .option-button {
+            background: white;
+            border: 3px solid #d1d5db;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1f2937;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        @media (max-width: 640px) {
+            .option-button {
+                padding: 10px;
+                font-size: 0.85rem;
+                border: 2px solid #d1d5db;
+            }
+        }
+        .option-button:hover:not(:disabled) {
+            background: #f3f4f6;
+            transform: scale(1.05);
+        }
+        .option-button:disabled:not(.option-correct):not(.option-incorrect) {
+            cursor: not-allowed;
+            transform: none;
+            background: white;
+            border-color: #d1d5db;
+        }
+        .option-correct {
+            background: #d1fae5 !important;
+            border-color: #10b981 !important;
+            color: #065f46 !important;
+        }
+        .option-incorrect {
+            background: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            color: #991b1b !important;
+        }
+        .feedback {
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            border: 3px solid;
+        }
+        @media (max-width: 640px) {
+            .feedback {
+                padding: 8px;
+                border: 2px solid;
+            }
+        }
+        .feedback-correct {
+            background: #d1fae5;
+            border-color: #10b981;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .feedback-correct:hover {
+            background: #a7f3d0;
+            transform: scale(1.02);
+        }
+        .feedback-correct:active {
+            transform: scale(0.98);
+        }
+        .feedback-correct-text {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #065f46;
+        }
+        @media (max-width: 640px) {
+            .feedback-correct-text {
+                font-size: 1rem;
+            }
+        }
+        .feedback-incorrect {
+            background: #fee2e2;
+            border-color: #ef4444;
+        }
+        .feedback-incorrect-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #991b1b;
+        }
+        @media (max-width: 640px) {
+            .feedback-incorrect-title {
+                font-size: 1rem;
+            }
+        }
+        .feedback-incorrect-text {
+            font-size: 1rem;
+            color: #b91c1c;
+            margin-top: 4px;
+        }
+        @media (max-width: 640px) {
+            .feedback-incorrect-text {
+                font-size: 0.85rem;
+            }
+        }
+        .countdown-bar-container {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 9999px;
+            overflow: hidden;
+            margin-top: 16px;
+        }
+        @media (max-width: 640px) {
+            .countdown-bar-container {
+                height: 6px;
+                margin-top: 12px;
+            }
+        }
+        .countdown-bar {
+            height: 100%;
+            background: linear-gradient(to right, #dc2626, #b91c1c);
+            width: 0%;
+            animation: countdown 3s linear forwards;
+        }
+        @keyframes countdown {
+            from {
+                width: 0%;
+            }
+            to {
+                width: 100%;
+            }
+        }
+        .score-card {
+            background: linear-gradient(to right, #dc2626, #b91c1c);
+            color: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        @media (max-width: 640px) {
+            .score-card {
+                padding: 16px;
+                margin-bottom: 12px;
+            }
+        }
+        .score-label {
+            font-size: 1.25rem;
+            margin-bottom: 4px;
+        }
+        @media (max-width: 640px) {
+            .score-label {
+                font-size: 1rem;
+            }
+        }
+        .score-number {
+            font-size: 3.75rem;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        @media (max-width: 640px) {
+            .score-number {
+                font-size: 2.5rem;
+            }
+        }
+        .score-percentage {
+            font-size: 1.125rem;
+        }
+        @media (max-width: 640px) {
+            .score-percentage {
+                font-size: 1rem;
+            }
+        }
+        .score-message {
+            font-size: 1.25rem;
+            color: #7c2d12;
+            margin-bottom: 16px;
+            font-weight: 600;
+            text-align: center;
+        }
+        @media (max-width: 640px) {
+            .score-message {
+                font-size: 1rem;
+                margin-bottom: 12px;
+            }
+        }
+        .restart-button {
+            background: linear-gradient(to right, #dc2626, #b91c1c);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 9999px;
+            font-size: 1.125rem;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+        .restart-button:hover {
+            transform: scale(1.05);
+            background: linear-gradient(to right, #b91c1c, #991b1b);
+        }
+        .overview-container {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+            max-height: 288px;
+            overflow-y: auto;
+        }
+        @media (max-width: 640px) {
+            .overview-container {
+                max-height: 200px;
+                padding: 12px;
+                margin-bottom: 16px;
+            }
+        }
+        .overview-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #7c2d12;
+            margin-bottom: 12px;
+        }
+        .overview-item {
+            margin-bottom: 12px;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid;
+            font-size: 0.875rem;
+        }
+        .overview-item-correct {
+            border-color: #10b981;
+        }
+        .overview-item-incorrect {
+            border-color: #ef4444;
+        }
+        .overview-question {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+        .overview-answer-wrong {
+            color: #dc2626;
+        }
+        .overview-answer-correct {
+            color: #059669;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const GeschiedenisQuiz = () => {
+            const questions = [
+                {
+                    question: "De drie groepen mensen in de Middeleeuwen?",
+                    options: ["Boeren, geestelijken, adel", "Koning, ridders, horigen", "Monniken, boeren, soldaten", "Adel, burgers, slaven"],
+                    correct: 0,
+                    emoji: "⚔️👑🌾"
+                },
+                {
+                    question: "Grote bewegingen van volkeren die naar nieuwe gebieden trokken?",
+                    options: ["Kruistochten", "Volksverhuizingen", "Ontdekkingsreizen", "Migraties"],
+                    correct: 1,
+                    emoji: "🚶‍♂️➡️🗺️"
+                },
+                {
+                    question: "De periode na de val van het Romeinse Rijk tot ongeveer het jaar 1000?",
+                    options: ["Late Middeleeuwen", "Vroege Middeleeuwen", "Donkere Eeuwen", "Prehistorie"],
+                    correct: 1,
+                    emoji: "🏰📜"
+                },
+                {
+                    question: "Noordse zeerovers die dorpen plunderden?",
+                    options: ["Romeinen", "Vikingen", "Hunnen", "Saracenen"],
+                    correct: 1,
+                    emoji: "⛵🪓"
+                },
+                {
+                    question: "Mannen die in kloosters woonden en hun leven aan God wijdden?",
+                    options: ["Ridders", "Priesters", "Monniken", "Bisschoppen"],
+                    correct: 2,
+                    emoji: "🙏⛪"
+                },
+                {
+                    question: "Een groot landgoed met een kasteel waar een heer woonde?",
+                    options: ["Domein", "Klooster", "Stad", "Dorp"],
+                    correct: 0,
+                    emoji: "🏰🌾"
+                },
+                {
+                    question: "Boeren die aan het land waren gebonden en voor de heer moesten werken?",
+                    options: ["Slaven", "Horigen", "Vazallen", "Knechten"],
+                    correct: 1,
+                    emoji: "👨‍🌾⛓️"
+                },
+                {
+                    question: "Het systeem waarbij een heer land gaf aan een vazal in ruil voor diensten?",
+                    options: ["Hofstelsel", "Feodalisme", "Leenstelsel", "Gildesysteem"],
+                    correct: [1, 2],
+                    emoji: "🤝🏰"
+                },
+                {
+                    question: "Gewapende soldaten te paard die voor de heer vochten?",
+                    options: ["Horigen", "Monniken", "Ridders", "Soldaten"],
+                    correct: 2,
+                    emoji: "⚔️🐴🛡️"
+                },
+                {
+                    question: "Een verschrikkelijke ziekte die miljoenen mensen doodde in de 14e eeuw?",
+                    options: ["Pokken", "Griep", "Pest", "Cholera"],
+                    correct: [2],
+                    emoji: "☠️🐀"
+                },
+                {
+                    question: "De periode waarin steden groeiden (1000-1500)?",
+                    options: ["Vroege Middeleeuwen", "Late Middeleeuwen", "Renaissance", "Gouden Eeuw"],
+                    correct: 1,
+                    emoji: "🏘️📈"
+                },
+                {
+                    question: "Rechten die steden kregen van de koning of heer?",
+                    options: ["Privileges", "Stadsrechten", "Vrijheden", "Concessies"],
+                    correct: 1,
+                    emoji: "📜🏛️"
+                },
+                {
+                    question: "De bestuurder van een middeleeuwse stad?",
+                    options: ["Burgemeester", "Schout", "Edelman", "Abt"],
+                    correct: 1,
+                    emoji: "👨‍⚖️🏘️"
+                },
+                {
+                    question: "Verenigingen van ambachtslieden die hetzelfde werk deden?",
+                    options: ["Bedrijven", "Gilden", "Cooperaties", "Vakbonden"],
+                    correct: 1,
+                    emoji: "🔨👥"
+                },
+                {
+                    question: "Een economie waarin je met geld betaalt in plaats van ruilen?",
+                    options: ["Handelseconomie", "Ruileconomie", "Geldeconomie", "Markteconomie"],
+                    correct: 2,
+                    emoji: "💰🪙"
+                },
+                {
+                    question: "Een bond van handelssteden rond de Noordzee en Oostzee?",
+                    options: ["Hanze", "Gilden", "Liga", "VOC"],
+                    correct: 0,
+                    emoji: "⛵🤝🏪"
+                },
+                {
+                    question: "Christenen die protesteerden tegen de katholieke kerk?",
+                    options: ["Hervormers", "Protestanten", "Lutheranen", "Calvinisten"],
+                    correct: 1,
+                    emoji: "✝️📖"
+                },
+                {
+                    question: "Geld dat je aan de kerk betaalde om je zonden vergeven te krijgen?",
+                    options: ["Tienden", "Aflaten", "Offers", "Donaties"],
+                    correct: 1,
+                    emoji: "💰⛪"
+                },
+                {
+                    question: "De koning van Spanje die Nederland wilde onderdrukken?",
+                    options: ["Karel V", "Filips II", "Willem van Oranje", "Maximiliaan I"],
+                    correct: 1,
+                    emoji: "👑🇪🇸"
+                },
+                {
+                    question: "De oorlog tussen Nederland en Spanje (1568-1648)?",
+                    options: ["Honderdjarige Oorlog", "Tachtigjarige Oorlog", "Dertigjarige Oorlog", "Spaanse Successieoorlog"],
+                    correct: 1,
+                    emoji: "⚔️🇳🇱🇪🇸"
+                }
+            ];
+
+            const [quizStarted, setQuizStarted] = useState(false);
+            const [currentQuestion, setCurrentQuestion] = useState(0);
+            const [score, setScore] = useState(0);
+            const [selectedAnswer, setSelectedAnswer] = useState(null);
+            const [quizFinished, setQuizFinished] = useState(false);
+            const [answeredQuestions, setAnsweredQuestions] = useState([]);
+
+            const playSound = (isCorrect) => {
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    if (isCorrect) {
+                        const notes = [262, 330, 392, 523];
+                        let time = audioContext.currentTime;
+                        
+                        notes.forEach((freq) => {
+                            oscillator.frequency.setValueAtTime(freq, time);
+                            gainNode.gain.setValueAtTime(0.3, time);
+                            gainNode.gain.exponentialRampToValueAtTime(0.01, time + 0.15);
+                            time += 0.15;
+                        });
+                        
+                        oscillator.start(audioContext.currentTime);
+                        oscillator.stop(audioContext.currentTime + 0.6);
+                    } else {
+                        oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
+                        oscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.5);
+                        
+                        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                        
+                        oscillator.start(audioContext.currentTime);
+                        oscillator.stop(audioContext.currentTime + 0.5);
+                    }
+                } catch (e) {
+                    console.log('Audio niet beschikbaar');
+                }
+            };
+
+            const playCompletionFanfare = () => {
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    
+                    const notes = [
+                        { freq: 523, start: 0, duration: 0.15 },
+                        { freq: 659, start: 0.15, duration: 0.15 },
+                        { freq: 784, start: 0.3, duration: 0.15 },
+                        { freq: 1047, start: 0.45, duration: 0.4 }
+                    ];
+                    
+                    notes.forEach(note => {
+                        const oscillator = audioContext.createOscillator();
+                        const gainNode = audioContext.createGain();
+                        
+                        oscillator.connect(gainNode);
+                        gainNode.connect(audioContext.destination);
+                        
+                        oscillator.frequency.setValueAtTime(note.freq, audioContext.currentTime + note.start);
+                        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime + note.start);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + note.start + note.duration);
+                        
+                        oscillator.start(audioContext.currentTime + note.start);
+                        oscillator.stop(audioContext.currentTime + note.start + note.duration);
+                    });
+                } catch (e) {
+                    console.log('Audio niet beschikbaar');
+                }
+            };
+
+            const handleAnswerClick = (index) => {
+                if (selectedAnswer !== null) return;
+                
+                setSelectedAnswer(index);
+                
+                const correctAnswers = Array.isArray(questions[currentQuestion].correct) 
+                    ? questions[currentQuestion].correct 
+                    : [questions[currentQuestion].correct];
+                const isCorrect = correctAnswers.includes(index);
+                
+                playSound(isCorrect);
+                
+                setAnsweredQuestions([...answeredQuestions, {
+                    question: questions[currentQuestion].question,
+                    correct: isCorrect,
+                    userAnswer: questions[currentQuestion].options[index],
+                    correctAnswer: questions[currentQuestion].options[correctAnswers[0]]
+                }]);
+                
+                if (isCorrect) {
+                    setScore(score + 1);
+                }
+                
+                setTimeout(() => {
+                    goToNextQuestion();
+                }, 3000);
+            };
+
+            const goToNextQuestion = () => {
+                if (currentQuestion < questions.length - 1) {
+                    setCurrentQuestion(currentQuestion + 1);
+                    setSelectedAnswer(null);
+                } else {
+                    playCompletionFanfare();
+                    setQuizFinished(true);
+                }
+            };
+
+            const restartQuiz = () => {
+                setCurrentQuestion(0);
+                setScore(0);
+                setSelectedAnswer(null);
+                setQuizFinished(false);
+                setAnsweredQuestions([]);
+                setQuizStarted(false);
+            };
+
+            const startQuiz = () => {
+                setQuizStarted(true);
+                
+                try {
+                    const utterance = new SpeechSynthesisUtterance("Let's go!");
+                    utterance.lang = 'en-US';
+                    utterance.rate = 1.2;
+                    utterance.pitch = 1.2;
+                    window.speechSynthesis.speak(utterance);
+                } catch (error) {
+                    console.log('Speech niet beschikbaar');
+                }
+            };
+
+            const getScoreMessage = () => {
+                const percentage = (score / questions.length) * 100;
+                if (percentage === 100) return "🌟 Perfect! Je bent een geschiedenis expert! 🌟";
+                if (percentage >= 80) return "🎉 Fantastisch gedaan! Heel goed geleerd! 🎉";
+                if (percentage >= 60) return "👍 Goed gedaan! Blijf oefenen! 👍";
+                if (percentage >= 40) return "💪 Niet slecht! Nog even door studeren! 💪";
+                return "📚 Nog even door oefenen, dan gaat het lukken! 📚";
+            };
+
+            if (!quizStarted) {
+                return (
+                    <div className="container">
+                        <div className="card">
+                            <div className="emoji-large">🏰⚔️</div>
+                            <h1 className="title">Geschiedenis als Theater Quiz</h1>
+                            <p className="subtitle">Geschiedenis Leerblad</p>
+                            <p className="subtitle-small">Thema 8.1 – Geschiedenis als theater</p>
+                            
+                            <button onClick={startQuiz} className="start-button">
+                                🚀 Start de Quiz!
+                            </button>
+                            
+                            <p className="tip">💡 Tip: Neem het leerblad goed door voordat je begint.</p>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (quizFinished) {
+                return (
+                    <div className="container">
+                        <div className="card">
+                            <div className="emoji-large">🏆</div>
+                            <h1 className="title">Quiz Voltooid!</h1>
+                            
+                            <div className="score-card">
+                                <p className="score-label">Jouw score:</p>
+                                <p className="score-number">{score}/{questions.length}</p>
+                                <p className="score-percentage">{Math.round((score / questions.length) * 100)}%</p>
+                            </div>
+                            
+                            <p className="score-message">{getScoreMessage()}</p>
+                            
+                            <div className="overview-container">
+                                <h3 className="overview-title">📋 Overzicht:</h3>
+                                {answeredQuestions.map((item, index) => (
+                                    <div key={index} className={`overview-item ${item.correct ? 'overview-item-correct' : 'overview-item-incorrect'}`}>
+                                        <p className="overview-question">Vraag {index + 1}: {item.question}</p>
+                                        {!item.correct && (
+                                            <>
+                                                <p className="overview-answer-wrong">❌ Jouw: {item.userAnswer}</p>
+                                                <p className="overview-answer-correct">✅ Goed: {item.correctAnswer}</p>
+                                            </>
+                                        )}
+                                        {item.correct && (
+                                            <p className="overview-answer-correct">✅ {item.correctAnswer}</p>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                            
+                            <button onClick={restartQuiz} className="restart-button" style={{margin: '0 auto'}}>
+                                <span>🔄</span>
+                                Opnieuw spelen
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="container">
+                    <div className="card">
+                        <h1 className="title" style={{fontSize: '1.875rem', marginBottom: '4px'}}>🏰 Geschiedenis Quiz ⚔️</h1>
+                        <p className="subtitle-small" style={{fontSize: '0.75rem'}}>Geschiedenis Leerblad</p>
+                        <p className="subtitle-small" style={{fontSize: '0.75rem', marginBottom: '16px'}}>Thema 8.1 – Geschiedenis als theater</p>
+                        
+                        <div className="progress-text">
+                            <span>Vraag {currentQuestion + 1}/{questions.length}</span>
+                            <span>Score: {score}/{questions.length}</span>
+                        </div>
+                        <div className="progress-bar-container">
+                            <div className="progress-bar" style={{ width: `${((currentQuestion) / questions.length) * 100}%` }}></div>
+                        </div>
+                        
+                        <div className="emoji-question">
+                            {questions[currentQuestion].emoji}
+                        </div>
+                        
+                        <div className="question-box">
+                            <h2 className="question-text">{questions[currentQuestion].question}</h2>
+                        </div>
+                        
+                        <div className="options-grid" key={currentQuestion}>
+                            {questions[currentQuestion].options.map((option, index) => {
+                                let className = "option-button";
+                                
+                                if (selectedAnswer !== null) {
+                                    const correctAnswers = Array.isArray(questions[currentQuestion].correct) 
+                                        ? questions[currentQuestion].correct 
+                                        : [questions[currentQuestion].correct];
+                                    
+                                    if (correctAnswers.includes(index)) {
+                                        className += " option-correct";
+                                    } else if (index === selectedAnswer) {
+                                        className += " option-incorrect";
+                                    }
+                                }
+                                
+                                return (
+                                    <button
+                                        key={`q${currentQuestion}-opt${index}`}
+                                        onClick={() => handleAnswerClick(index)}
+                                        disabled={selectedAnswer !== null}
+                                        className={className}
+                                    >
+                                        {selectedAnswer !== null && (() => {
+                                            const correctAnswers = Array.isArray(questions[currentQuestion].correct) 
+                                                ? questions[currentQuestion].correct 
+                                                : [questions[currentQuestion].correct];
+                                            
+                                            if (correctAnswers.includes(index)) return "✅ ";
+                                            if (index === selectedAnswer && !correctAnswers.includes(index)) return "❌ ";
+                                            return "";
+                                        })()}
+                                        {option}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                        
+                        {selectedAnswer !== null && (
+                            <div>
+                                {(() => {
+                                    const correctAnswers = Array.isArray(questions[currentQuestion].correct) 
+                                        ? questions[currentQuestion].correct 
+                                        : [questions[currentQuestion].correct];
+                                    const isCorrect = correctAnswers.includes(selectedAnswer);
+                                    
+                                    return isCorrect ? (
+                                        <div className="feedback feedback-correct" onClick={goToNextQuestion}>
+                                            <p className="feedback-correct-text">🎉 Goed gedaan! 🎉</p>
+                                        </div>
+                                    ) : (
+                                        <div className="feedback feedback-incorrect">
+                                            <p className="feedback-incorrect-title">Helaas!</p>
+                                            <p className="feedback-incorrect-text">
+                                                Goed antwoord: <strong>{questions[currentQuestion].options[correctAnswers[0]]}</strong>
+                                            </p>
+                                        </div>
+                                    );
+                                })()}
+                                
+                                <div className="countdown-bar-container">
+                                    <div className="countdown-bar" key={currentQuestion}></div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<GeschiedenisQuiz />, document.getElementById('root'));
+    </script>
+</body>
+</html>
