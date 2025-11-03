@@ -137,6 +137,27 @@
                 margin-top: 16px;
             }
         }
+        .audio-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 24px;
+            margin-bottom: 16px;
+        }
+        .audio-player {
+            width: 100%;
+            max-width: 400px;
+            outline: none;
+        }
+        .audio-player::-webkit-media-controls-panel {
+            background: linear-gradient(to right, #fee2e2, #fecaca);
+        }
+        @media (max-width: 640px) {
+            .audio-container {
+                margin-top: 16px;
+                margin-bottom: 12px;
+            }
+        }
         .progress-bar-container {
             width: 100%;
             background: #e5e7eb;
@@ -737,6 +758,13 @@
                             <h1 className="title">Geschiedenis als Theater Quiz</h1>
                             <p className="subtitle">Geschiedenis Leerblad</p>
                             <p className="subtitle-small">Thema 8.1 – Geschiedenis als theater</p>
+                            
+                            <div className="audio-container">
+                                <audio controls className="audio-player">
+                                    <source src="https://github.com/leumasejnaro/geschiedenis-als-therater/raw/main/Geschiedenis_Toetsheld__De_Kernbegrippen_van_de_Middeleeuw_to.m4a" type="audio/mp4" />
+                                    Je browser ondersteunt geen audio.
+                                </audio>
+                            </div>
                             
                             <button onClick={startQuiz} className="start-button">
                                 🚀 Start de Quiz!
