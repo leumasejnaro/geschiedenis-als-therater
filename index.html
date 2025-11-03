@@ -104,25 +104,28 @@
         .start-button {
             background: linear-gradient(to right, #dc2626, #b91c1c);
             color: white;
-            padding: 20px 48px;
+            padding: 20px; /* Adjusted padding */
             border-radius: 9999px;
             font-size: 1.5rem;
             font-weight: bold;
             border: none;
             cursor: pointer;
             display: block;
-            margin: 0 auto;
+            margin: 16px auto 0; /* Adjusted margin */
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
             transition: all 0.3s;
+            width: 100%; /* Added width */
+            max-width: 400px; /* Added max-width to match audio player */
+            text-align: center; /* Added text-align */
         }
         @media (max-width: 640px) {
             .start-button {
-                padding: 14px 32px;
+                padding: 14px; /* Adjusted padding for mobile */
                 font-size: 1.1rem;
             }
         }
         .start-button:hover {
-            transform: scale(1.1);
+            transform: scale(1.05); /* Kept hover effect, but scale(1.1) might be too much with max-width */
             background: linear-gradient(to right, #b91c1c, #991b1b);
         }
         .tip {
@@ -144,33 +147,18 @@
             margin-top: 24px;
             margin-bottom: 16px;
         }
-        .audio-button {
-            background: linear-gradient(to right, #7c2d12, #991b1b);
-            color: white;
-            padding: 14px 32px;
-            border-radius: 9999px;
-            font-size: 1.125rem;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 8px 12px -2px rgba(0, 0, 0, 0.15);
-            transition: all 0.3s;
+        .audio-player {
+            width: 100%;
+            max-width: 400px;
+            outline: none;
         }
-        .audio-button:hover {
-            transform: scale(1.05);
-            background: linear-gradient(to right, #991b1b, #7f1d1d);
+        .audio-player::-webkit-media-controls-panel {
+            background: linear-gradient(to right, #fee2e2, #fecaca);
         }
         @media (max-width: 640px) {
             .audio-container {
                 margin-top: 16px;
                 margin-bottom: 12px;
-            }
-            .audio-button {
-                padding: 12px 24px;
-                font-size: 1rem;
             }
         }
         .progress-bar-container {
@@ -771,20 +759,22 @@
                         <div className="card">
                             <div className="emoji-large">🏰⚔️</div>
                             <h1 className="title">Geschiedenis als Theater Quiz</h1>
-                            <p className="subtitle">Geschiedenis Leerblad</p>
                             <p className="subtitle-small">Thema 8.1 – Geschiedenis als theater</p>
                             
                             <div className="audio-container">
-                                <a 
-                                    href="https://github.com/leumasejnaro/geschiedenis-als-therater/raw/refs/heads/main/Geschiedenis_Toetsheld__De_Kernbegrippen_van_de_Middeleeuwen_to.m4a"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="audio-button"
-                                    style={{textDecoration: 'none'}}
-                                >
-                                    <span style={{fontSize: '1.5rem'}}>🔊</span>
-                                    Luister naar uitleg
-                                </a>
+                                <audio controls className="audio-player">
+                                    {/* Optie 1: MP3 als meest universele type. U moet deze link mogelijk aanpassen als u geen MP3-bestand heeft. */}
+                                    <source 
+                                        src="https://raw.githubusercontent.com/leumasejnaro/geschiedenis-als-therater/main/Geschiedenis_Toetsheld__De_Kernbegrippen_van_de_Middeleeuwen_to.mp3" 
+                                        type="audio/mpeg" 
+                                    />
+                                    {/* Optie 2: M4A met een betere MIME type (audio/mp4) voor compatibiliteit. */}
+                                    <source 
+                                        src="https://raw.githubusercontent.com/leumasejnaro/geschiedenis-als-therater/main/Geschiedenis_Toetsheld__De_Kernbegrippen_van_de_Middeleeuwen_to.m4a" 
+                                        type="audio/mp4" 
+                                    />
+                                    Je browser ondersteunt geen audio.
+                                </audio>
                             </div>
                             
                             <button onClick={startQuiz} className="start-button">
@@ -843,7 +833,6 @@
                 <div className="container">
                     <div className="card">
                         <h1 className="title" style={{fontSize: '1.875rem', marginBottom: '4px'}}>🏰 Geschiedenis Quiz ⚔️</h1>
-                        <p className="subtitle-small" style={{fontSize: '0.75rem'}}>Geschiedenis Leerblad</p>
                         <p className="subtitle-small" style={{fontSize: '0.75rem', marginBottom: '16px'}}>Thema 8.1 – Geschiedenis als theater</p>
                         
                         <div className="progress-text">
@@ -936,4 +925,3 @@
     </script>
 </body>
 </html>
-
