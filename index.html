@@ -144,7 +144,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 24px;
+            margin-top: 16px; /* Default margin-top */
             margin-bottom: 16px;
         }
         .audio-player {
@@ -456,9 +456,9 @@
             margin-bottom: 12px;
             padding: 12px;
             background: white;
-            border-radius: 8px;
             border-left: 4px solid;
             font-size: 0.875rem;
+            border-radius: 8px;
         }
         .overview-item-correct {
             border-color: #10b981;
@@ -487,6 +487,7 @@
 
         const GeschiedenisQuiz = () => {
             const questions = [
+                // (Vragen blijven hetzelfde)
                 {
                     question: "De drie groepen mensen in de Middeleeuwen?",
                     options: ["Boeren, geestelijken, adel", "Koning, ridders, horigen", "Monniken, boeren, soldaten", "Adel, burgers, slaven"],
@@ -761,9 +762,14 @@
                             <h1 className="title">Geschiedenis als Theater Quiz</h1>
                             <p className="subtitle-small">Thema 8.1 – Geschiedenis als theater</p>
                             
-                            <div className="audio-container">
+                            <button onClick={startQuiz} className="start-button">
+                                🚀 Start de Quiz!
+                            </button>
+                            
+                            {/* De audio container is nu ONDER de startknop geplaatst */}
+                            <div className="audio-container" style={{ marginTop: '16px' }}>
                                 <audio controls className="audio-player">
-                                    {/* Optie 1: MP3 als meest universele type. U moet deze link mogelijk aanpassen als u geen MP3-bestand heeft. */}
+                                    {/* Optie 1: MP3 als meest universele type. */}
                                     <source 
                                         src="https://raw.githubusercontent.com/leumasejnaro/geschiedenis-als-therater/main/Geschiedenis_Toetsheld__De_Kernbegrippen_van_de_Middeleeuwen_to.mp3" 
                                         type="audio/mpeg" 
@@ -777,11 +783,7 @@
                                 </audio>
                             </div>
                             
-                            <button onClick={startQuiz} className="start-button">
-                                🚀 Start de Quiz!
-                            </button>
-                            
-                            <p className="tip">💡 Tip: Neem het leerblad goed door voordat je begint.</p>
+                            <p className="tip">💡 Tip: Luister naar de audio om je nog beter voor te bereiden</p>
                         </div>
                     </div>
                 );
